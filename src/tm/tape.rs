@@ -1,10 +1,22 @@
-#[derive(Debug)]
+#[derive(Debug, Hash, PartialEq, Eq)]
 pub enum TapeMovement { L, R }
 
 #[derive(Debug)]
 pub struct Tape {
     data: Vec<String>,
     position: usize
+}
+
+impl TapeMovement {
+
+    pub fn new(movement: &str) -> TapeMovement {
+        match movement {
+            "L" => TapeMovement::L,
+            "R" => TapeMovement::R,
+            _   => panic!("Erro na leitura do movimento, {:?}", movement)
+        }
+    }
+
 }
 
 impl Tape {
