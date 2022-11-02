@@ -30,6 +30,10 @@ impl TM {
             transitions: HashMap::new()
         }
     }
+
+    pub fn write_tape(input: Vec<String>) {
+
+    }
     
     pub fn load_yaml_file(&mut self, filepath: String) {
         let data = yaml_utils::read_from_file(filepath);
@@ -67,7 +71,6 @@ impl TM {
         self.transitions.clear();
         transitions.iter()
             .map(|transition| { (transition.get("input").unwrap().as_str().unwrap(), transition.get("output").unwrap().as_str().unwrap()) })
-            .map(|(input, output)| { (input.to_string(), output.to_string()) })
             .map(|(input, output)| {
                 let input = input.split(" ").collect::<Vec<&str>>();
                 let output = output.split(" ").collect::<Vec<&str>>();
@@ -81,7 +84,7 @@ impl TM {
 
                 (TMInpuit::new(state, read_symbol, input_symbol), TMOutput::new(output_state, tape_movement))
             })
-             .for_each(|(input, output)| { self.transitions.insert(input, output); });
+            .for_each(|(input, output)| { self.transitions.insert(input, output); });
     }
 
 }
