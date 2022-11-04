@@ -1,3 +1,5 @@
+use std::ops::Deref;
+
 #[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]
 pub enum TapeMovement { L, R }
 
@@ -37,8 +39,22 @@ impl Tape {
         self.position = self.tape_size / 2;
     }
 
-    pub fn write_tape(&mut self, input: Vec<String>) {
-        self.data = input;
+    pub fn write_tape(&mut self, input: Vec<String>, blank_symbol: &String) {
+        self.data.iter_mut()
+            .for_each(|symbol| { *symbol = "".to_string() });
+
+        self.position = 0;
+        self.data[self.position] = blank_symbol.clone();
+        self.position += 1;
+
+        let input_length = input.len();
+        for i in self.position..input_length+1 {
+            self.data[i] = input[i - 1].clone();
+        }
+
+        self.position += input_length;
+        self.data[self.position] = blank_symbol.clone();
+        self.position = 1;
     }
 
     pub fn read(&mut self) -> String {

@@ -5,10 +5,10 @@ use tm::turing_machine::TM;
 
 fn main() {
     let mut turing_machine = TM::new();
-    println!("{:?}", turing_machine);
+    // println!("{:?}", turing_machine);
 
     turing_machine.load_yaml_file(String::from("machine.yaml"));
-    println!("{:?}", turing_machine);
+    // println!("{:?}", turing_machine);
 
     let stdin = std::io::stdin();
     let mut buffer = String::new();
@@ -25,4 +25,6 @@ fn main() {
 
     turing_machine.write_tape(input);
     println!("{:?}", turing_machine);
+
+    turing_machine.step();
 }

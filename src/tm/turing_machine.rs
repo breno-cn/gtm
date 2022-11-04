@@ -35,13 +35,17 @@ impl TM {
 
     pub fn write_tape(&mut self, input: Vec<String>) {
         self.tape.reset_tape();
-        self.tape.write_tape(input);
+        self.tape.write_tape(input, self.blank_symbol.as_ref().unwrap());
     }
 
     pub fn step(&mut self) {
         let current_symbol = self.tape.read();
         let current_state = self.current_state.clone().unwrap();
         let input = TMInpuit::new(current_state, current_symbol);
+
+        println!("{:?}", self.transitions);
+        println!("INPUT..........");
+        println!("{:?}", input);
 
         let output = self.transitions.get(&input).unwrap();
         let state = output.state.clone();
