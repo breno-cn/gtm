@@ -39,7 +39,18 @@ impl TM {
     }
 
     pub fn step(&mut self) {
-        // let input = TMInpuit::new(self.initial_state, read_symbol, input_symbol)
+        let current_symbol = self.tape.read();
+        let current_state = self.current_state.clone().unwrap();
+        let input = TMInpuit::new(current_state, current_symbol);
+
+        let output = self.transitions.get(&input).unwrap();
+        let state = output.state.clone();
+        let input_symbol = output.input_symbol.clone();
+        let tape_movement = output.tape_movement.clone();
+    
+        self.current_state = Some(state);
+        self.tape.write(input_symbol);
+        self.tape.move_tape(tape_movement);
     }
     
     pub fn load_yaml_file(&mut self, filepath: String) {

@@ -1,4 +1,4 @@
-#[derive(Debug, Hash, PartialEq, Eq)]
+#[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]
 pub enum TapeMovement { L, R }
 
 #[derive(Debug)]
@@ -41,8 +41,19 @@ impl Tape {
         self.data = input;
     }
 
-    // pub fn read(&mut self) -> String {
-        // self.data[self.position]
-    // }
+    pub fn read(&mut self) -> String {
+        self.data[self.position].clone()
+    }
+
+    pub fn write(&mut self, symbol: String) {
+        self.data[self.position] = symbol;
+    }
+
+    pub fn move_tape(&mut self, movement: TapeMovement) {
+        match movement {
+            TapeMovement::L => self.position -= 1,
+            TapeMovement::R => self.position += 1
+        }
+    }
 
 }

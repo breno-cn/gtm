@@ -6,11 +6,11 @@ pub struct TMInpuit {
     read_symbol: String,
 }
 
-#[derive(Debug, Hash, PartialEq, Eq)]
+#[derive(Debug, Hash, PartialEq, Eq, Clone)]
 pub struct  TMOutput {
-    state: State,
-    input_symbol: String,
-    tape_movement: TapeMovement
+    pub state: State,
+    pub input_symbol: String,
+    pub tape_movement: TapeMovement
 }
 
 impl TMInpuit {
