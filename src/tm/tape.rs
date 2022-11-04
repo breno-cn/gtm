@@ -41,4 +41,8 @@ impl Tape {
         self.data = input;
     }
 
+    // pub fn read(&mut self) -> String {
+        // self.data[self.position]
+    // }
+
 }

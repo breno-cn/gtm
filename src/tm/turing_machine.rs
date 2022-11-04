@@ -9,6 +9,7 @@ pub struct TM {
     states: Vec<State>,
     initial_state: Option<State>,
     final_states: Vec<State>,
+    current_state: Option<State>,
     alphabet: Vec<String>,
     input_symbols: Vec<String>,
     blank_symbol: Option<String>,
@@ -23,6 +24,7 @@ impl TM {
             states: vec![],
             initial_state: None,
             final_states: vec![],
+            current_state: None,
             alphabet: vec![],
             input_symbols: vec![],
             blank_symbol: None,
@@ -34,6 +36,10 @@ impl TM {
     pub fn write_tape(&mut self, input: Vec<String>) {
         self.tape.reset_tape();
         self.tape.write_tape(input);
+    }
+
+    pub fn step(&mut self) {
+        // let input = TMInpuit::new(self.initial_state, read_symbol, input_symbol)
     }
     
     pub fn load_yaml_file(&mut self, filepath: String) {
@@ -59,6 +65,8 @@ impl TM {
             .map(|state| { State::new(state.as_str().unwrap().to_string()) })
             .collect();
 
+        self.current_state = self.initial_state.clone();
+
         self.alphabet = alphabet.iter()
             .map(|symbol| { symbol.as_str().unwrap().to_string() })
             .collect();
@@ -78,12 +86,12 @@ impl TM {
 
                 let state = State::new(input[0].to_string());
                 let read_symbol = input[1].to_string();
-                let input_symbol = input[2].to_string();
 
                 let output_state = State::new(output[0].to_string());
-                let tape_movement = TapeMovement::new(output[1]);
+                let input_symbol = output[1].to_string();
+                let tape_movement = TapeMovement::new(output[2]);
 
-                (TMInpuit::new(state, read_symbol, input_symbol), TMOutput::new(output_state, tape_movement))
+                (TMInpuit::new(state, read_symbol), TMOutput::new(output_state, input_symbol,tape_movement))
             })
             .for_each(|(input, output)| { self.transitions.insert(input, output); });
     }
