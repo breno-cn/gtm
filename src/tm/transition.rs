@@ -4,27 +4,27 @@ use super::{state::State, tape::TapeMovement};
 pub struct TMInpuit {
     state: State,
     read_symbol: String,
-    input_symbol: String
 }
 
-#[derive(Debug, Hash, PartialEq, Eq)]
+#[derive(Debug, Hash, PartialEq, Eq, Clone)]
 pub struct  TMOutput {
-    state: State,
-    tape_movement: TapeMovement
+    pub state: State,
+    pub input_symbol: String,
+    pub tape_movement: TapeMovement
 }
 
 impl TMInpuit {
 
-    pub fn new(state: State, read_symbol: String, input_symbol: String) -> TMInpuit {
-        TMInpuit { state, read_symbol, input_symbol }
+    pub fn new(state: State, read_symbol: String,) -> TMInpuit {
+        TMInpuit { state, read_symbol }
     }
 
 }
 
 impl TMOutput {
 
-    pub fn new(state: State, tape_movement: TapeMovement) -> TMOutput {
-        TMOutput { state, tape_movement }
+    pub fn new(state: State, input_symbol: String, tape_movement: TapeMovement) -> TMOutput {
+        TMOutput { state, input_symbol, tape_movement }
     }
 
 }
