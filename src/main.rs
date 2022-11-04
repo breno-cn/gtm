@@ -27,4 +27,5 @@ fn main() {
     println!("{:?}", turing_machine);
 
     turing_machine.step();
+    println!("{:?}", turing_machine);
 }

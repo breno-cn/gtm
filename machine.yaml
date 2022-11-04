@@ -13,6 +13,6 @@ final_states:
   - Q0
 transitions:
   - input: Q0 0
-    output: Q1 0 R
+    output: Q1 1 R
   - input: Q1 1
     output: Q0 1 L
