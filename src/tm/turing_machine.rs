@@ -31,8 +31,9 @@ impl TM {
         }
     }
 
-    pub fn write_tape(input: Vec<String>) {
-
+    pub fn write_tape(&mut self, input: Vec<String>) {
+        self.tape.reset_tape();
+        self.tape.write_tape(input);
     }
     
     pub fn load_yaml_file(&mut self, filepath: String) {
