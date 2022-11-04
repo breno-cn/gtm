@@ -35,10 +35,6 @@ impl Tape {
         }
     }
 
-    pub fn reset_tape(&mut self) {
-        self.position = self.tape_size / 2;
-    }
-
     pub fn write_tape(&mut self, input: Vec<String>, blank_symbol: &String) {
         self.data.iter_mut()
             .for_each(|symbol| { *symbol = "".to_string() });

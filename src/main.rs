@@ -19,7 +19,7 @@ fn main() {
         .trim()
         .split(" ")
         .map(|word| { word.to_string() })
-        .collect::<Vec<String>>();
+        .collect();
 
     println!("{:?}", input);
 

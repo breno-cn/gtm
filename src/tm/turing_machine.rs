@@ -34,7 +34,6 @@ impl TM {
     }
 
     pub fn write_tape(&mut self, input: Vec<String>) {
-        self.tape.reset_tape();
         self.tape.write_tape(input, self.blank_symbol.as_ref().unwrap());
     }
 
