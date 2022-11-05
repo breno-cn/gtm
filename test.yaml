@@ -1,0 +1,19 @@
+states:
+  - Q0
+  - Q1
+alphabet:
+  - "0"
+  - "1"
+  - "B"
+input_symbols:
+  - "0"
+  - "1"
+blank_symbol: B
+initial_state: Q0
+final_states:
+  - Q1
+transitions:
+  - input: Q0 0
+    output: Q0 1 R
+  - input: Q0 B
+    output: Q1 B L
