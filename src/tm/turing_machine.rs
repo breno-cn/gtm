@@ -45,10 +45,6 @@ impl TM {
         let current_state = self.current_state.clone().unwrap();
         let input = TMInpuit::new(current_state, current_symbol);
 
-        // println!("{:?}", self.transitions);
-        // println!("INPUT..........");
-        // println!("{:?}", input);
-
         let output = self.transitions.get(&input);
         match output {
             Some(output) => {
