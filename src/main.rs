@@ -7,7 +7,7 @@ fn main() {
     let mut turing_machine = TM::new();
     // println!("{:?}", turing_machine);
 
-    turing_machine.load_yaml_file(String::from("machine.yaml"));
+    turing_machine.load_yaml_file(String::from("test.yaml"));
     // println!("{:?}", turing_machine);
 
     let stdin = std::io::stdin();
@@ -26,6 +26,22 @@ fn main() {
     turing_machine.write_tape(input);
     println!("{:?}", turing_machine);
 
-    turing_machine.step();
-    println!("{:?}", turing_machine);
+    // turing_machine.step();
+    // println!("{:?}", turing_machine);
+
+    let mut steps = 0;
+    loop {
+        let halt = turing_machine.step();
+        match halt {
+            Some(halt_state) => { 
+                println!("{:?}, \n{:?}", turing_machine, halt_state);
+                println!("steps: {}", steps);
+                break;
+            }
+            None => {
+                println!("...");
+                steps += 1;
+            }
+        }
+    }
 }

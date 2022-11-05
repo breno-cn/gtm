@@ -5,6 +5,9 @@ use crate::{yaml::yaml_utils, tm::tape::TapeMovement};
 use super::{state::State, tape::Tape, transition::{TMInpuit, TMOutput}};
 
 #[derive(Debug)]
+pub enum Halt { Accept, Reject }
+
+#[derive(Debug)]
 pub struct TM {
     states: Vec<State>,
     initial_state: Option<State>,
@@ -37,23 +40,38 @@ impl TM {
         self.tape.write_tape(input, self.blank_symbol.as_ref().unwrap());
     }
 
-    pub fn step(&mut self) {
+    pub fn step(&mut self) -> Option<Halt> {
         let current_symbol = self.tape.read();
         let current_state = self.current_state.clone().unwrap();
         let input = TMInpuit::new(current_state, current_symbol);
 
-        println!("{:?}", self.transitions);
-        println!("INPUT..........");
-        println!("{:?}", input);
+        // println!("{:?}", self.transitions);
+        // println!("INPUT..........");
+        // println!("{:?}", input);
 
-        let output = self.transitions.get(&input).unwrap();
-        let state = output.state.clone();
-        let input_symbol = output.input_symbol.clone();
-        let tape_movement = output.tape_movement.clone();
+        let output = self.transitions.get(&input);
+        match output {
+            Some(output) => {
+                let state = output.state.clone();
+                let input_symbol = output.input_symbol.clone();
+                let tape_movement = output.tape_movement.clone();
     
-        self.current_state = Some(state);
-        self.tape.write(input_symbol);
-        self.tape.move_tape(tape_movement);
+                self.current_state = Some(state);
+                self.tape.write(input_symbol);
+                self.tape.move_tape(tape_movement);
+
+                None
+            },
+            None => Some(self.accept())
+        }
+    }
+
+    pub fn accept(&self) -> Halt {
+        if self.final_states.contains(&self.current_state.as_ref().unwrap()) {
+            Halt::Accept
+        } else {
+            Halt::Reject
+        }
     }
     
     pub fn load_yaml_file(&mut self, filepath: String) {
