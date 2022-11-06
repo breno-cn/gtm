@@ -9,15 +9,15 @@ pub enum Halt { Accept, Reject }
 
 #[derive(Debug)]
 pub struct TM {
-    states: Vec<State>,
-    initial_state: Option<State>,
-    final_states: Vec<State>,
-    current_state: Option<State>,
-    alphabet: Vec<String>,
-    input_symbols: Vec<String>,
-    blank_symbol: Option<String>,
-    tape: Tape,
-    transitions: HashMap<TMInpuit, TMOutput>
+    pub states: Vec<State>,
+    pub initial_state: Option<State>,
+    pub final_states: Vec<State>,
+    pub current_state: Option<State>,
+    pub alphabet: Vec<String>,
+    pub input_symbols: Vec<String>,
+    pub blank_symbol: Option<String>,
+    pub tape: Tape,
+    pub transitions: HashMap<TMInpuit, TMOutput>
 }
 
 impl TM {
@@ -70,7 +70,7 @@ impl TM {
         }
     }
     
-    pub fn load_yaml_file(&mut self, filepath: String) {
+    pub fn load_yaml_file(&mut self, filepath: &String) {
         let data = yaml_utils::read_from_file(filepath);
 
         let states = data.get("states").unwrap().as_sequence().unwrap().clone();

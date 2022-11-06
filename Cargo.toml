@@ -8,3 +8,5 @@ edition = "2021"
 [dependencies]
 serde = "1.0"
 serde_yaml = "0.9"
+ncurses = "5.86.0"
+cursive = "0.20"

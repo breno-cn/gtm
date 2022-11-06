@@ -2,8 +2,8 @@ use super::{state::State, tape::TapeMovement};
 
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub struct TMInpuit {
-    state: State,
-    read_symbol: String,
+    pub state: State,
+    pub read_symbol: String,
 }
 
 #[derive(Debug, Hash, PartialEq, Eq, Clone)]
