@@ -35,7 +35,7 @@ impl TM {
             blank_symbol: None,
             tape: Tape::new(),
             transitions: HashMap::new(),
-            rewinds: Vec::new(),
+            rewinds: vec![],
             current_step: 0
         }
     }
