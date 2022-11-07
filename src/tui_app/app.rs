@@ -68,6 +68,9 @@ impl App {
             .collect::<Vec<String>>()
             .join("\n");
         ncurses::addstr(format!("{}\n", transitions).as_str());
+
+        let current_step = self.turing_machine.current_step;
+        ncurses::addstr(format!("Passo atual: {}", current_step).as_str());
     }
 
     fn render_tape(&self) {

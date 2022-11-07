@@ -18,7 +18,8 @@ pub struct TM {
     pub blank_symbol: Option<String>,
     pub tape: Tape,
     pub transitions: HashMap<TMInpuit, TMOutput>,
-    pub rewinds: Vec<Rewind>
+    pub rewinds: Vec<Rewind>,
+    pub current_step: i32
 }
 
 impl TM {
@@ -34,7 +35,8 @@ impl TM {
             blank_symbol: None,
             tape: Tape::new(),
             transitions: HashMap::new(),
-            rewinds: Vec::new()
+            rewinds: Vec::new(),
+            current_step: 0
         }
     }
 
@@ -62,6 +64,8 @@ impl TM {
                 self.current_state = Some(state);
                 self.tape.write(input_symbol);
                 self.tape.move_tape(tape_movement);
+                
+                self.current_step += 1;
 
                 None
             },
@@ -90,6 +94,8 @@ impl TM {
         self.current_state = Some(old_state);
         self.tape.move_tape(rewind_movement);
         self.tape.write(old_symbol);
+
+        self.current_step -= 1;
     }
     
     pub fn load_yaml_file(&mut self, filepath: &String) {
