@@ -76,6 +76,8 @@ impl App {
         let tape = self.turing_machine.tape.data.join(" ");
 
         ncurses::addstr(format!("{}\n", tape).as_str());
+        let cursor = "  ".repeat(self.turing_machine.tape.position);
+        ncurses::addstr(format!("{}*\n", cursor).as_str());
     }
 
     fn get_next_movement(&self) -> Option<MachineStep> {
