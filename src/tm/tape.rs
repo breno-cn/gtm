@@ -47,7 +47,7 @@ impl Display for TapeMovement {
 impl Tape {
 
     pub fn new() -> Tape {
-        let tape_size = 10;
+        let tape_size = 20;
         let initial_tape_pos = tape_size / 2;
 
         Tape {
