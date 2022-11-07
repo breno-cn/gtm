@@ -1,13 +1,13 @@
-use std::ops::Deref;
+use std::{fmt::Display};
 
 #[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]
 pub enum TapeMovement { L, R }
 
 #[derive(Debug)]
 pub struct Tape {
-    data: Vec<String>,
-    position: usize,
-    tape_size: usize
+    pub data: Vec<String>,
+    pub position: usize,
+    pub tape_size: usize
 }
 
 impl TapeMovement {
@@ -17,6 +17,17 @@ impl TapeMovement {
             "L" => TapeMovement::L,
             "R" => TapeMovement::R,
             _   => panic!("Erro na leitura do movimento, {:?}", movement)
+        }
+    }
+
+}
+
+impl Display for TapeMovement {
+
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            TapeMovement::L => write!(f, "L"),
+            TapeMovement::R => write!(f, "R"),
         }
     }
 

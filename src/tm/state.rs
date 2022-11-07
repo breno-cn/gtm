@@ -1,6 +1,6 @@
 #[derive(Debug, Hash, PartialEq, Eq, Clone)]
 pub struct State {
-    name: String
+    pub name: String
 }
 
 impl State {
