@@ -1,4 +1,4 @@
-use std::{ops::Deref, fmt::Display};
+use std::{fmt::Display};
 
 #[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]
 pub enum TapeMovement { L, R }
@@ -28,7 +28,6 @@ impl Display for TapeMovement {
         match self {
             TapeMovement::L => write!(f, "L"),
             TapeMovement::R => write!(f, "R"),
-            _               => write!(f, "X")
         }
     }
 

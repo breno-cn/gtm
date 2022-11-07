@@ -1,11 +1,11 @@
-use std::{borrow::Borrow, fmt::format};
+use crate::{tm::turing_machine::{TM, Halt}};
 
-use cursive::{CursiveRunnable, views::{TextView, NamedView, EditView}, view::Nameable};
-
-use crate::{tm::turing_machine::TM};
+#[derive(Debug)]
+enum MachineStep { Advance, Return }
 
 pub struct App {
-    turing_machine: TM
+    turing_machine: TM,
+    buffer: String
 }
 
 impl App {
@@ -13,19 +13,21 @@ impl App {
     pub fn new() -> App {
         App {
             turing_machine: TM::new(),
+            buffer: String::new()
         }
     }
 
     pub fn init(&mut self, filepath: String) {
         ncurses::initscr();
-        ncurses::raw();
-        ncurses::noecho();
+        ncurses::keypad(ncurses::stdscr(), true);
+        // ncurses::raw();
+        // ncurses::noecho();
 
         self.turing_machine = TM::new();
         self.turing_machine.load_yaml_file(&filepath);
     }
 
-    pub fn render_machine(&self) {
+    fn render_machine(&self) {
         ncurses::clear();
 
         let states = self.turing_machine.states
@@ -57,9 +59,6 @@ impl App {
         let blank_symbol = self.turing_machine.blank_symbol.as_ref().unwrap();
         ncurses::addstr(format!("Símbolo branco: {}\n", blank_symbol).as_str());
 
-        let tape = self.turing_machine.tape.data.join(" ");
-        ncurses::addstr(format!("Fita: {}\n", tape).as_str());
-
         let transitions = self.turing_machine.transitions
             .iter()
             .map(|(key, value)| {
@@ -71,17 +70,70 @@ impl App {
             .collect::<Vec<String>>()
             .join("\n");
         ncurses::addstr(format!("{}\n", transitions).as_str());
-
-        ncurses::getch();
     }
 
-    pub fn run(&mut self) {
-        loop {
-            self.render_machine();
-            break;
+    fn render_tape(&self) {
+        ncurses::addstr("\n\n");
+        
+        let tape = self.turing_machine.tape.data.join(" ");
+
+        ncurses::addstr(format!("{}\n", tape).as_str());
+    }
+
+    fn get_next_movement(&self) -> Option<MachineStep> {
+        let input = ncurses::get_wch().unwrap();
+
+        match input {
+            ncurses::WchResult::KeyCode(ncurses::KEY_RIGHT) => Some(MachineStep::Advance),
+            ncurses::WchResult::KeyCode(ncurses::KEY_LEFT) => Some(MachineStep::Return),
+            _ => None
         }
     }
 
+    fn get_tape_input(&mut self) -> Vec<String> {
+        ncurses::getstr(&mut self.buffer);
+
+        self.buffer
+            .split(" ")
+            .map(String::from)
+            .collect()
+    }
+
+    fn accept(&self) {
+        ncurses::addstr("ACEITA!\n");
+    }
+
+    fn reject(&self) {
+        ncurses::addstr("REJEITA!\n");
+    }
+
+    pub fn run(&mut self) {
+        ncurses::addstr("Digite o conteudo da fita: ");
+
+        let input = self.get_tape_input();
+        self.turing_machine.write_tape(input);
+
+        loop {
+            self.render_machine();
+            self.render_tape();
+
+            if let Some(movement) = self.get_next_movement() {
+                // println!("{:?}", movement);
+                if let Some(halt) = match movement {
+                    MachineStep::Advance => self.turing_machine.step(),
+                    _                    => None
+                } {
+                    match halt {
+                        Halt::Accept => self.accept(),
+                        Halt::Reject => self.reject()
+                    };
+
+                    ncurses::getch();
+                    break;
+                }
+            }
+        }
+    }
 }
 
 impl Drop for App {
