@@ -20,8 +20,6 @@ impl App {
     pub fn init(&mut self, filepath: String) {
         ncurses::initscr();
         ncurses::keypad(ncurses::stdscr(), true);
-        // ncurses::raw();
-        // ncurses::noecho();
 
         self.turing_machine = TM::new();
         self.turing_machine.load_yaml_file(&filepath);
@@ -118,7 +116,6 @@ impl App {
             self.render_tape();
 
             if let Some(movement) = self.get_next_movement() {
-                // println!("{:?}", movement);
                 if let Some(halt) = match movement {
                     MachineStep::Advance => self.turing_machine.step(),
                     _                    => None

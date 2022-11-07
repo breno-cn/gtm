@@ -2,9 +2,6 @@ mod tm;
 mod yaml;
 mod tui_app;
 
-// use ncurses;
-// use tm::turing_machine::TM;
-
 use std::env;
 
 use tui_app::app::{App};
