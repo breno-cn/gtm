@@ -120,7 +120,10 @@ impl App {
             if let Some(movement) = self.get_next_movement() {
                 if let Some(halt) = match movement {
                     MachineStep::Advance => self.turing_machine.step(),
-                    _                    => None
+                    MachineStep::Return  => {
+                        self.turing_machine.rewind();
+                        None
+                    }
                 } {
                     match halt {
                         Halt::Accept => self.accept(),

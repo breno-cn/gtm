@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use crate::{yaml::yaml_utils, tm::tape::TapeMovement};
 
-use super::{state::State, tape::Tape, transition::{TMInpuit, TMOutput}};
+use super::{state::State, tape::Tape, transition::{TMInpuit, TMOutput, Rewind}};
 
 #[derive(Debug)]
 pub enum Halt { Accept, Reject }
@@ -17,7 +17,8 @@ pub struct TM {
     pub input_symbols: Vec<String>,
     pub blank_symbol: Option<String>,
     pub tape: Tape,
-    pub transitions: HashMap<TMInpuit, TMOutput>
+    pub transitions: HashMap<TMInpuit, TMOutput>,
+    pub rewinds: Vec<Rewind>
 }
 
 impl TM {
@@ -32,7 +33,8 @@ impl TM {
             input_symbols: vec![],
             blank_symbol: None,
             tape: Tape::new(),
-            transitions: HashMap::new()
+            transitions: HashMap::new(),
+            rewinds: Vec::new()
         }
     }
 
@@ -43,7 +45,8 @@ impl TM {
     pub fn step(&mut self) -> Option<Halt> {
         let current_symbol = self.tape.read();
         let current_state = self.current_state.clone().unwrap();
-        let input = TMInpuit::new(current_state, current_symbol);
+        let input = TMInpuit::new(current_state.clone(), current_symbol.clone());
+        
 
         let output = self.transitions.get(&input);
         match output {
@@ -52,6 +55,10 @@ impl TM {
                 let input_symbol = output.input_symbol.clone();
                 let tape_movement = output.tape_movement.clone();
     
+                let reverse_movement = tape_movement.reverse();
+                let rewind = Rewind::new(current_state, current_symbol, reverse_movement);
+                self.rewinds.push(rewind);
+
                 self.current_state = Some(state);
                 self.tape.write(input_symbol);
                 self.tape.move_tape(tape_movement);
@@ -68,6 +75,21 @@ impl TM {
         } else {
             Halt::Reject
         }
+    }
+
+    pub fn rewind(&mut self) {
+        if self.rewinds.is_empty() {
+            return;
+        }
+
+        let rewind = self.rewinds.pop().unwrap();
+        let old_state = rewind.old_state;
+        let old_symbol = rewind.old_symbol;
+        let rewind_movement = rewind.rewind_movement;
+
+        self.current_state = Some(old_state);
+        self.tape.move_tape(rewind_movement);
+        self.tape.write(old_symbol);
     }
     
     pub fn load_yaml_file(&mut self, filepath: &String) {

@@ -13,9 +13,16 @@ pub struct  TMOutput {
     pub tape_movement: TapeMovement
 }
 
+#[derive(Debug, Hash, PartialEq, Eq, Clone)]
+pub struct Rewind {
+    pub old_state: State,
+    pub old_symbol: String,
+    pub rewind_movement: TapeMovement
+}
+
 impl TMInpuit {
 
-    pub fn new(state: State, read_symbol: String,) -> TMInpuit {
+    pub fn new(state: State, read_symbol: String) -> TMInpuit {
         TMInpuit { state, read_symbol }
     }
 
@@ -25,6 +32,14 @@ impl TMOutput {
 
     pub fn new(state: State, input_symbol: String, tape_movement: TapeMovement) -> TMOutput {
         TMOutput { state, input_symbol, tape_movement }
+    }
+
+}
+
+impl Rewind {
+
+    pub fn new(old_state: State, old_symbol: String, rewind_movement: TapeMovement) -> Rewind {
+        Rewind { old_state, old_symbol, rewind_movement }
     }
 
 }

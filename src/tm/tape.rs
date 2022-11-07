@@ -22,6 +22,17 @@ impl TapeMovement {
 
 }
 
+impl TapeMovement {
+
+    pub fn reverse(&self) -> TapeMovement {
+        match self {
+            Self::L => Self::R,
+            Self::R => Self::L
+        }
+    }    
+
+}
+
 impl Display for TapeMovement {
 
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
