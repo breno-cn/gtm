@@ -1,0 +1,75 @@
+states:
+  - Q0
+  - Q1
+  - Q2
+  - Q3
+  - Q4
+  - Q5
+  - Q6
+  - Q7
+alphabet:
+  - a
+  - b
+  - c
+input_symbols:
+  - a
+  - b
+  - c
+  - x
+  - "y"
+  - B
+blank_symbol: B
+initial_state: Q0
+final_states:
+  - Q7
+transitions:
+  - input: Q0 a
+    output: Q1 x R
+  - input: Q1 a
+    output: Q1 a R
+  - input: Q1 b
+    output: Q1 b R
+  - input: Q1 c
+    output: Q1 c R
+  - input: Q1 B
+    output: Q3 B L
+  - input: Q1 x
+    output: Q3 x L
+  - input: Q1 y
+    output: Q3 y L
+  - input: Q3 a
+    output: Q5 x L
+  - input: Q0 b
+    output: Q2 y R
+  - input: Q2 a
+    output: Q2 a R
+  - input: Q2 b
+    output: Q2 b R
+  - input: Q2 c
+    output: Q2 c R
+  - input: Q2 B
+    output: Q4 B L
+  - input: Q2 x
+    output: Q4 x L
+  - input: Q2 y
+    output: Q4 y L
+  - input: Q4 b
+    output: Q5 y L
+  - input: Q0 c
+    output: Q6 c R
+  - input: Q6 x
+    output: Q6 x R
+  - input: Q6 y
+    output: Q6 y R
+  - input: Q6 B
+    output: Q7 B L
+  - input: Q5 a
+    output: Q5 a L
+  - input: Q5 b
+    output: Q5 b L
+  - input: Q5 c
+    output: Q5 c L
+  - input: Q5 x
+    output: Q0 x R
+  - input: Q5 y
+    output: Q0 y R
