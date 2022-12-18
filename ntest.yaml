@@ -1,0 +1,26 @@
+states:
+  - Q0
+  - Q1
+alphabet:
+  - "0"
+  - "1"
+  - "B"
+input_symbols:
+  - "0"
+  - "1"
+blank_symbol: B
+initial_state: Q0
+final_states:
+  - Q1
+n_tapes: 3
+transitions:
+  - input_state: Q0
+    input_symbols: 0 0 0
+    output_state: Q0
+    output_symbols: 1 1 1
+    tape_movements: R R R
+  - input_state: Q0
+    input_symbols: B B B
+    output_state: Q1
+    output_symbols: B B B
+    tape_movements: L L L
