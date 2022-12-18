@@ -27,6 +27,7 @@ impl App {
 
     fn render_machine(&self) {
         ncurses::clear();
+        ncurses::addstr(format!("{:?}", self.turing_machine.transitions).as_str());
 
         let states = self.turing_machine.states
             .iter()
@@ -60,8 +61,8 @@ impl App {
         let transitions = self.turing_machine.transitions
             .iter()
             .map(|(key, value)| {
-                let input = format!("({}, {})", key.state.name, key.read_symbol);
-                let output = format!("({}, {}, {})", value.state.name, value.input_symbol, value.tape_movement);
+                let input = format!("({}, {:?})", key.state.name, key.read_symbols);
+                let output = format!("({}, {:?}, {:?})", value.state.name, value.input_symbols, value.tape_movements);
 
                 format!("{} -> {}", input, output)
             })
@@ -76,11 +77,14 @@ impl App {
     fn render_tape(&self) {
         ncurses::addstr("\n\n");
         
-        let tape = self.turing_machine.tape.data.join(" ");
+        self.turing_machine.tapes.iter()
+            .for_each(|tape| {
+                let tape_str = tape.data.join(" ");
 
-        ncurses::addstr(format!("{}\n", tape).as_str());
-        let cursor = "  ".repeat(self.turing_machine.tape.position);
-        ncurses::addstr(format!("{}*\n", cursor).as_str());
+                ncurses::addstr(format!("{}\n", tape_str).as_str());
+                let cursor = "  ".repeat(tape.position);
+                ncurses::addstr(format!("{}*\n", cursor).as_str()); 
+            });
     }
 
     fn get_next_movement(&self) -> Option<MachineStep> {
@@ -94,7 +98,11 @@ impl App {
     }
 
     fn get_tape_input(&mut self) -> Vec<String> {
+        self.buffer.clear();
+        
+        ncurses::addstr("Digite o conteudo da fita: ");
         ncurses::getstr(&mut self.buffer);
+        ncurses::addstr("\n");
 
         self.buffer
             .split(" ")
@@ -111,10 +119,15 @@ impl App {
     }
 
     pub fn run(&mut self) {
-        ncurses::addstr("Digite o conteudo da fita: ");
 
-        let input = self.get_tape_input();
-        self.turing_machine.write_tape(input);
+        let mut inputs = Vec::<Vec<String>>::new();
+        for _ in 0..self.turing_machine.n_tapes {
+            inputs.push(self.get_tape_input());
+        }
+        self.turing_machine.write_tape(inputs.clone());
+        ncurses::addstr("\n");
+        ncurses::addstr(format!("{:?}", inputs).as_str());
+        ncurses::addstr("\n");
 
         loop {
             self.render_machine();

@@ -3,7 +3,7 @@ use std::{fmt::Display};
 #[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]
 pub enum TapeMovement { L, R }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Tape {
     pub data: Vec<String>,
     pub position: usize,
@@ -75,7 +75,7 @@ impl Tape {
         self.position = 1;
     }
 
-    pub fn read(&mut self) -> String {
+    pub fn read(&self) -> String {
         self.data[self.position].clone()
     }
 
