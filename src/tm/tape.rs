@@ -1,7 +1,7 @@
 use std::{fmt::Display};
 
 #[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]
-pub enum TapeMovement { L, R }
+pub enum TapeMovement { L, R, S }
 
 #[derive(Debug, Clone)]
 pub struct Tape {
@@ -16,6 +16,7 @@ impl TapeMovement {
         match movement {
             "L" => TapeMovement::L,
             "R" => TapeMovement::R,
+            "S" => TapeMovement::S,
             _   => panic!("Erro na leitura do movimento, {:?}", movement)
         }
     }
@@ -27,7 +28,8 @@ impl TapeMovement {
     pub fn reverse(&self) -> TapeMovement {
         match self {
             Self::L => Self::R,
-            Self::R => Self::L
+            Self::R => Self::L,
+            Self::S => Self::S
         }
     }    
 
@@ -39,6 +41,7 @@ impl Display for TapeMovement {
         match self {
             TapeMovement::L => write!(f, "L"),
             TapeMovement::R => write!(f, "R"),
+            TapeMovement::S => write!(f, "S")
         }
     }
 
@@ -86,7 +89,8 @@ impl Tape {
     pub fn move_tape(&mut self, movement: TapeMovement) {
         match movement {
             TapeMovement::L => self.position -= 1,
-            TapeMovement::R => self.position += 1
+            TapeMovement::R => self.position += 1,
+            TapeMovement::S => return
         }
     }
 
