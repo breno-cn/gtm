@@ -59,7 +59,7 @@ impl Tape {
 
     pub fn write_tape(&mut self, input: Vec<String>, blank_symbol: &String) {
         self.data.iter_mut()
-            .for_each(|symbol| { *symbol = "".to_string() });
+            .for_each(|symbol| { *symbol = blank_symbol.to_string() });
 
         self.position = 0;
         self.data[self.position] = blank_symbol.clone();
