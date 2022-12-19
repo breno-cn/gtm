@@ -27,7 +27,6 @@ impl App {
 
     fn render_machine(&self) {
         ncurses::clear();
-        ncurses::addstr(format!("{:?}", self.turing_machine.transitions).as_str());
 
         let states = self.turing_machine.states
             .iter()
@@ -125,9 +124,6 @@ impl App {
             inputs.push(self.get_tape_input());
         }
         self.turing_machine.write_tape(inputs.clone());
-        ncurses::addstr("\n");
-        ncurses::addstr(format!("{:?}", inputs).as_str());
-        ncurses::addstr("\n");
 
         loop {
             self.render_machine();
