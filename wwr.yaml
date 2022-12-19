@@ -1,0 +1,46 @@
+states:
+  - Q0
+  - Q1
+  - Q2
+alphabet:
+  - a
+  - b
+input_symbols:
+  - a
+  - b
+blank_symbol: B
+initial_state: Q0
+final_states:
+  - Q2
+n_tapes: 2
+transitions:
+  - input_state: Q0
+    input_symbols: a B
+    output_state: Q0
+    output_symbols: a B
+    tape_movements: R S
+  - input_state: Q0
+    input_symbols: b B
+    output_state: Q0
+    output_symbols: b B
+    tape_movements: R S
+  - input_state: Q0
+    input_symbols: B B
+    output_state: Q1
+    output_symbols: B B
+    tape_movements: L S 
+  - input_state: Q1
+    input_symbols: a B
+    output_state: Q1
+    output_symbols: a a
+    tape_movements: L R
+  - input_state: Q1
+    input_symbols: b B
+    output_state: Q1
+    output_symbols: b b
+    tape_movements: L R
+  - input_state: Q1
+    input_symbols: B B
+    output_state: Q2
+    output_symbols: B B
+    tape_movements: R L
